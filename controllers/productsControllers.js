@@ -27,4 +27,22 @@ const createProduct = async (req, res) => {
   }
 };
 
-export { getProducts, createProduct, getProduct };
+const updateProduct = async (req, res) => {
+  try {
+    const result = await Product.updateOne({ _id: req.params.id }, req.body);
+    return res.status(200).send("Product updated successfully1");
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const result = await Product.deleteOne({ _id: req.params.id });
+    return res.status(200).send("Product deleted successfully1");
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+};
+
+export { getProducts, createProduct, getProduct, updateProduct, deleteProduct };

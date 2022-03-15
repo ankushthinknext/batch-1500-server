@@ -15,6 +15,7 @@ const attemptLogin = async (req, res) => {
         full_name: user.full_name,
         email: user.email,
         isVerified: user.isVerified,
+        role: user.role,
       },
       process.env.JWT_SECRET_KEY,
     );

@@ -16,8 +16,13 @@ const createUser = async (req, res) => {
     let hash = await bcrypt.hash(req.body.password, salt);
     req.body.password = hash;
 
-    let result = await User.create(req.body);
-    res.status(201).send(result);
+    let result = await User.create({
+      full_name: req.body.full_name,
+      password: req.body.password,
+      email: req.body.email,
+    });
+    let { full_name, isVerified, email } = result;
+    res.status(201).send({ full_name, isVerified, email, role });
   } catch (error) {
     res.status(400).send(error.message);
   }
