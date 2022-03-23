@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import upload from "./configs/multerConfig.js";
 // const connectDB = require("./dbconn");
 
 import connectDB from "./dbconn.js";
@@ -11,6 +12,7 @@ import dotenv from "dotenv";
 import { logger } from "./middlewares/logger.js";
 const app = express();
 app.use(express.json());
+app.use(express.static("uploads"));
 app.use(cors());
 
 dotenv.config();
@@ -18,6 +20,10 @@ dotenv.config();
 connectDB();
 
 app.use(logger);
+
+app.post("/upload", upload.single("image"), (req, res) => {
+  console.log(req.file);
+});
 
 // app.use(morgan("tiny"));
 app.use("/api/products", productsRoute);

@@ -20,8 +20,6 @@ function cashierOrAdmin(req, res, next) {
     if (role === "Admin" || role === "Cashier") return next();
 
     return res.status(401).send("Unauthorized");
-
-    next();
   } catch (error) {
     res.status(400).send(error.message);
   }
