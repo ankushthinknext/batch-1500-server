@@ -1,28 +1,34 @@
 import express from "express";
 import cors from "cors";
-import morgan from "morgan";
+import dotenv from "dotenv";
+dotenv.config();
 import upload from "./configs/multerConfig.js";
+import cloudinary from "./configs/cloudinaryConfig.js";
 // const connectDB = require("./dbconn");
 
 import connectDB from "./dbconn.js";
 import productsRoute from "./routes/productRoutes.js";
 import usersRoutes from "./routes/usersRoute.js";
 import authRoutes from "./routes/authRoutes.js";
-import dotenv from "dotenv";
 import { logger } from "./middlewares/logger.js";
 const app = express();
 app.use(express.json());
 app.use(express.static("uploads"));
 app.use(cors());
 
-dotenv.config();
-
 connectDB();
 
 app.use(logger);
 
-app.post("/upload", upload.single("image"), (req, res) => {
+app.post("/upload", upload.single("image"), async (req, res) => {
   console.log(req.file);
+
+  try {
+    let response = await cloudinary.uploader.upload(req.file.path);
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 // app.use(morgan("tiny"));
